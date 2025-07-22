@@ -91,9 +91,11 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.Parent = PlayerGui
 
+-- Warning Frame (Enlarged)
+-- Balanced Enlarged Frame (just enough to fit profile)
 local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0.5, 0, 0.5, 0)
-Frame.Position = UDim2.new(0.25, 0, 0.3, 0)
+Frame.Size = UDim2.new(0.75, 0, 0.92, 0) -- not too tall, just right
+Frame.Position = UDim2.new(0.125, 0, 0.04, 0) -- slightly higher so it stays centered visually
 Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Frame.BorderSizePixel = 4
 Frame.Name = "WarningBox"
@@ -106,21 +108,21 @@ RunService.RenderStepped:Connect(function()
 	Frame.BorderColor3 = Color3.fromHSV(rainbow / 360, 1, 1)
 end)
 
--- Warning Icon
 local Icon = Instance.new("TextLabel")
-Icon.Size = UDim2.new(0.15, 0, 1, 0)
-Icon.Position = UDim2.new(0, 0, 0, 0)
+Icon.Size = UDim2.new(1, 0, 0.15, 0)
+Icon.Position = UDim2.new(0, 0, 0.02, 0)
 Icon.BackgroundTransparency = 1
 Icon.Text = "⚠️"
 Icon.Font = Enum.Font.SourceSansBold
 Icon.TextScaled = true
 Icon.TextColor3 = Color3.fromRGB(255, 200, 0)
+Icon.TextYAlignment = Enum.TextYAlignment.Center
+Icon.TextXAlignment = Enum.TextXAlignment.Center
 Icon.Parent = Frame
 
--- Warning Text
 local TextLabel = Instance.new("TextLabel")
-TextLabel.Size = UDim2.new(0.85, -20, 0.45, 0)
-TextLabel.Position = UDim2.new(0.15, 10, 0, 0)
+TextLabel.Size = UDim2.new(0.9, 0, 0.25, 0)
+TextLabel.Position = UDim2.new(0.05, 0, 0.17, 0)
 TextLabel.BackgroundTransparency = 1
 TextLabel.TextColor3 = Color3.new(1, 1, 1)
 TextLabel.TextWrapped = true
@@ -128,6 +130,7 @@ TextLabel.TextScaled = true
 TextLabel.Font = Enum.Font.SourceSansBold
 TextLabel.Text = "Currently not working on Delta.\nUse KRNL or turn off Anti Scam on Delta."
 TextLabel.Parent = Frame
+
 
 -- Download Button
 local DownloadButton = Instance.new("TextButton")
@@ -205,17 +208,16 @@ CloseTutorial.MouseButton1Click:Connect(function()
 	TutorialPopup.Visible = false
 end)
 
--- Profile
 local ProfilePic = Instance.new("ImageLabel")
 ProfilePic.Size = UDim2.new(0, 60, 0, 60)
-ProfilePic.Position = UDim2.new(1, -70, 1, -70)
+ProfilePic.Position = UDim2.new(0.5, -30, 0.92, 0) -- near bottom inside
 ProfilePic.BackgroundTransparency = 1
 ProfilePic.Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
 ProfilePic.Parent = Frame
 
 local NameLabel = Instance.new("TextLabel")
-NameLabel.Size = UDim2.new(1, 0, 0.3, 0)
-NameLabel.Position = UDim2.new(0, 0, -0.35, 0)
+NameLabel.Size = UDim2.new(0, 140, 0, 30)
+NameLabel.Position = UDim2.new(0.5, -70, 0.87, 0)
 NameLabel.BackgroundTransparency = 1
 NameLabel.Text = LocalPlayer.DisplayName
 NameLabel.TextColor3 = Color3.new(1, 1, 1)
@@ -223,4 +225,5 @@ NameLabel.Font = Enum.Font.SourceSansBold
 NameLabel.TextScaled = true
 NameLabel.TextWrapped = true
 NameLabel.TextXAlignment = Enum.TextXAlignment.Center
-NameLabel.Parent = ProfilePicLoadingGui.ResetOnSpawn
+NameLabel.Parent = Frame
+
